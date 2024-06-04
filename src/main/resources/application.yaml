@@ -1,0 +1,15 @@
+server:
+  port=8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: password
+
+  application:
+    name: schoolT1
+  jpa:
+    hibernate:
+      ddl-auto: create
+  liquibase:
+    change-log: db/changelog/changelog.yaml

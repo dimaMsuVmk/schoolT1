@@ -20,6 +20,9 @@ public class TrackTimeAspect {
     public Object trackExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         boolean exp = false;
         long start = System.currentTimeMillis();
+        String methodName = joinPoint.getSignature().getName();
+        Object[] methodArgs = joinPoint.getArgs();
+        log.info("Method {} start executed with arguments {}",methodName,methodArgs);
         try {
             Object proceed = joinPoint.proceed();
             return proceed;
@@ -30,7 +33,7 @@ public class TrackTimeAspect {
             if (!exp) {
                 long executionTime = System.currentTimeMillis() - start;
                 timeTrackingService.saveTimeTracking(executionTime, joinPoint);
-                log.info("Method {} executed async in {} ms", joinPoint.getSignature(), executionTime);
+                log.info("Method {} success finish executed for {} ms", methodName, executionTime);
             }
         }
     }

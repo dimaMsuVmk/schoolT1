@@ -13,8 +13,9 @@ public class MyClass {
     }
 
     @TrackAsyncTime
-    public void foo2() throws Exception {
+    public Integer foo2() throws Exception {
         Thread.sleep(2000);
         System.out.println("_______________foo2_____from MyClass_____________");
+        return 0;
     }
 }

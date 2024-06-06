@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Aspect
 @Component
@@ -21,11 +22,12 @@ public class TrackAsyncTimeAspect {
     private final TimeTrackingService timeTrackingService;
 
     @Around("@annotation(com.dimamsu.schoolt1.aop.TrackAsyncTime)")
-    public Object trackExecutionAsyncTime(ProceedingJoinPoint joinPoint) {
+    public Object trackExecutionAsyncTime(ProceedingJoinPoint joinPoint) throws ExecutionException, InterruptedException {
         long startTime = System.currentTimeMillis();
 
         return CompletableFuture.supplyAsync(() -> {
                     try {
+                        log.info("Асинхронный запуск TrackAsyncTimeAspect");
                         return joinPoint.proceed();
                     } catch (Throwable e) {
                         throw new InternalServerException(e.getMessage());
@@ -39,7 +41,8 @@ public class TrackAsyncTimeAspect {
                     return result;
                 })
                 .exceptionally(e -> {
+                    log.error("Ошибка trackExecutionAsyncTime", e);
                     throw new InternalServerException(e.getMessage());
-                });
+                }).get();
     }
 }

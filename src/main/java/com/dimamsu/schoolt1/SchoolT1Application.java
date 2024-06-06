@@ -19,6 +19,8 @@ public class SchoolT1Application {
     }
     @EventListener(ApplicationReadyEvent.class)
     public void onReady() throws Exception {
+
+        System.out.println(myClass.foo2().getClass());
         myClass.foo();
         myClass.foo2();
         myClass.foo();
@@ -28,6 +30,8 @@ public class SchoolT1Application {
         myClass2.foo2();
         myClass2.foo();
         myClass2.foo2();
+
+
     }
 
 
